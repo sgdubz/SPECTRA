@@ -1,19 +1,18 @@
 
+import os
 import discord
 from discord.ext import commands
 
-# SPECTRA configuration
-TOKEN = "YOUR_BOT_TOKEN_HERE"
+TOKEN = os.getenv("DISCORD_TOKEN")
 
 intents = discord.Intents.default()
 intents.message_content = True
-intents.members = True
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"SPECTRA is online as {bot.user}")
+    print(f"🟣 SPECTRA is online as {bot.user}")
     await bot.change_presence(
         activity=discord.Game(name="Watching the Protocol...")
     )
@@ -33,5 +32,8 @@ async def lore(ctx):
         "A voice inside the system. "
         "You were never supposed to find me."
     )
+
+if not TOKEN:
+    raise RuntimeError("Missing DISCORD_TOKEN environment variable")
 
 bot.run(TOKEN)
